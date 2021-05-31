@@ -1,0 +1,14 @@
+<h1>Hello this is the index of books</h1>
+
+<table>
+  <tr>
+    <th>Id</th>
+    <th>Title</th>
+  </tr>
+  {{#each rows}}
+    <tr>
+      <td>{{this.id}}</td>
+      <td>{{this.bookName}}</td>
+    </tr>
+  {{/each}}
+</table>
