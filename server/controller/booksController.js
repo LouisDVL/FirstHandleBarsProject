@@ -21,9 +21,13 @@ exports.view = (req, res) => {
         if (err) console.log(err);
         else {
           res.render("./books/index", { rows });
-          console.log(rows);
         }
       });
     }
   });
+};
+
+//This will return the form to add a new book
+exports.createForm = (req, res) => {
+  res.render("./books/createForm");
 };

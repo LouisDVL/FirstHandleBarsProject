@@ -35,13 +35,9 @@ serverPool.getConnection((err, connection) => {
   }
 });
 
-app.get("/", (req, res) => {
-  res.send("<h1>Hello and Welcome</h1>");
-});
-
-//This will configure the routes for the books
-const bookRoutes = require("./server/routes/books");
-app.get("/books", bookRoutes);
+//This will configure the routes for the website (separation of concerns)
+const routes = require("./server/routes/routes");
+app.use("/", routes);
 
 app.listen(port, () => {
   console.log(`The server is running on ${port}`);
