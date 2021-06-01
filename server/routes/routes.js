@@ -7,7 +7,8 @@ const indexController = require("../controller/indexController");
 router.get("/", indexController.view);
 
 //url for books
-router.get("/books/newbook", bookController.createForm);
 router.get("/books", bookController.view);
+router.get("/books/newbook", bookController.createForm);
+router.post("/books/newbook", bookController.createBook);
 
 module.exports = router;

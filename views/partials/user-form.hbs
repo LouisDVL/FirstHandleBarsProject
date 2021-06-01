@@ -1,0 +1,20 @@
+<label for="bookName">Book Name:</label>
+<input type="text" id="bookName" name="bookName" value="" />
+<label for="publishDate">Publish Date:</label>
+<input type="date" id="publishDate" name="publishDate" value="" />
+
+<label for="author">Choose an Author:</label>
+<select name="author" id="author">
+  {{#each rows}}
+    <option value={{this.authorId}}>{{this.firstName}}</option>
+  {{/each}}
+</select>
+
+<label for="publisher">Choose a publisher:</label>
+<select name="publisher" id="publisher">
+  {{#each rows}}
+    <option value={{this.publisherId}}>{{this.name}}</option>
+  {{/each}}
+</select>
+
+<button type="submit">Add Book</button>
