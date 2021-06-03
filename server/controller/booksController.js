@@ -103,3 +103,14 @@ exports.editBook = (req, res) => {
     );
   });
 };
+
+exports.deleteBook = (req, res) => {
+  const id = req.params.id;
+  serverPool.getConnection((err, connection) => {
+    if (err) throw err;
+    connection.query("DELETE FROM books WHERE id = ?", [id], (err, rows) => {
+      if (err) throw err;
+      res.redirect("/books");
+    });
+  });
+};
