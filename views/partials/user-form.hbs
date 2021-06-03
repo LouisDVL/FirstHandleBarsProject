@@ -1,19 +1,26 @@
 <label for="bookName">Book Name:</label>
-<input type="text" id="bookName" name="bookName" value="" />
+<input type="text" id="bookName" name="bookName" value="{{book.bookName}}" />
 <label for="publishDate">Publish Date:</label>
-<input type="date" id="publishDate" name="publishDate" value="" />
+<input
+  type="date"
+  id="publishDate"
+  name="publishDate"
+  value="{{book.publishDate}}"
+/>
 
 <label for="author">Choose an Author:</label>
-<select name="author" id="author">
-  {{#each rows}}
-    <option value={{this.authorId}}>{{this.firstName}}</option>
+<select name="author" id="author" value={{book.authorId}}>
+  <option value={{book.authorId}} default>{{book.fullname}}</option>
+  {{#each authors}}
+    <option value={{this.id}}>{{this.fullName}}</option>
   {{/each}}
 </select>
 
 <label for="publisher">Choose a publisher:</label>
 <select name="publisher" id="publisher">
-  {{#each rows}}
-    <option value={{this.publisherId}}>{{this.name}}</option>
+  <option value={{book.publisherId}} default>{{book.publisherName}}</option>
+  {{#each publishers}}
+    <option value={{this.id}}>{{this.name}}</option>
   {{/each}}
 </select>
 

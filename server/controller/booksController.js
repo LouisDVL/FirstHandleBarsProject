@@ -33,12 +33,14 @@ exports.createForm = (req, res) => {
     if (err) throw error;
     else {
       connection.query(
-        "SELECT DISTINCT authors.id AS authorId, authors.firstName, publishers.id AS publisherId, publishers.name FROM books INNER JOIN authors ON books.authorId = authors.id INNER JOIN publishers ON books.publisherId = publishers.id;",
+        "SELECT id, CONCAT(firstName, ' ', lastName) AS fullName FROM authors; SELECT * FROM publishers;",
         (err, rows) => {
           connection.release();
           if (err) throw error;
           else {
-            res.render("./books/createForm", { rows });
+            const authors = rows[0];
+            const publishers = rows[1];
+            res.render("./books/createForm", { authors, publishers });
           }
         }
       );
@@ -62,5 +64,42 @@ exports.createBook = (req, res) => {
         }
       );
     }
+  });
+};
+
+exports.editFormView = (req, res) => {
+  serverPool.getConnection((err, connection) => {
+    if (err) throw err;
+    else {
+      connection.query(
+        "SELECT books.id,bookName,publishDate,publisherId,authors.id AS authorId, CONCAT(authors.firstName,' ', authors.lastName) AS fullname, publishers.id AS publisherId, publishers.name AS publisherName FROM books INNER JOIN authors ON books.authorId = authors.id INNER JOIN publishers ON books.publisherId = publishers.id WHERE books.id = ?; SELECT authors.id, CONCAT(authors.firstName, ' ', authors.lastName) AS fullName FROM authors; SELECT * FROM publishers;",
+        [req.params.id],
+        (err, rows) => {
+          if (err) throw err;
+          const book = rows[0][0];
+          const authors = rows[1];
+          const publishers = rows[2];
+          book.publishDate = book.publishDate.toISOString();
+          book.publishDate = book.publishDate.substring(0, 10);
+          res.render("./books/editForm", { book, authors, publishers });
+        }
+      );
+    }
+  });
+};
+
+exports.editBook = (req, res) => {
+  const id = req.params.id;
+  const { bookName, author, publishDate, publisher } = req.body;
+  serverPool.getConnection((err, connection) => {
+    if (err) throw err;
+    connection.query(
+      "UPDATE books SET bookName = ?, authorId = ?, publishDate = ?, publisherId = ? WHERE id = ?",
+      [bookName, author, publishDate, publisher, id],
+      (err, rows) => {
+        if (err) throw err;
+        res.redirect("/books");
+      }
+    );
   });
 };
